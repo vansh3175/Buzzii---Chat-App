@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LucideSendHorizonal, Image } from "lucide-react";
 import axios from "axios";
-import { setMessages, setMessageSending } from "../store/chatSlice";
+import { setMessages, setMessageSending, setUsers } from "../store/chatSlice";
 import {motion,AnimatePresence} from 'framer-motion'
 import { XCircle } from "lucide-react";
 import { getSocket } from "../util/socketInstance";
@@ -19,6 +19,7 @@ function ChatTypeArea() {
   const selectedUser = useSelector((state) => state.chat.selectedUser);
   const selectedUserId = selectedUser._id;
   const messages = useSelector((state) => state.chat.messages);
+  const users = useSelector((state)=>state.chat.users);
   const theme = useSelector((state) => state.theme.theme); // 'dark' or 'light'
 
   const handleSubmit = (e) => {
@@ -54,7 +55,14 @@ function ChatTypeArea() {
         setPreview(null);
         dispatch(setMessages({ messages: [...messages, res.data.chat] }));
         dispatch(setMessageSending({status:false}));
+        const updateUsers = users.map((user)=>{
+          if(user._id!==selectedUser._id) return user;
+          else return {...user,lastMsg:res.data.chat}
+        });
+        
+        dispatch(setUsers({users:updateUsers}));
         if(getSocket()){
+          
           getSocket().emit('send-message',res.data.chat);
         }
         dispatch(setMessageSending({status:false}));

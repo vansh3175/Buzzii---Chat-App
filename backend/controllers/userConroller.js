@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs')
 const {createJWTToken} = require('../lib/util')
+const axios = require('axios')
 dotenv.config();
 
 module.exports.login=async (req,res)=>{
@@ -80,4 +81,58 @@ module.exports.logout = (req,res)=>{
     res.status(200).json({msg:"logged out successfully"});
 }
 
+module.exports.googleLogin = async (req,res)=>{
+    const redirectUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID
+    }&redirect_uri=${process.env.GOOGLE_REDIRECT_URI
+    }&response_type=code&scope=email%20profile`;
+  res.redirect(redirectUrl);
+}
+
+module.exports.googleCallback =async (req,res)=>{
+    const {code} = req.query;
+
+    try {
+    
+    const tokenRes = await axios.post("https://oauth2.googleapis.com/token", null, {
+      params: {
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        code,
+        grant_type: "authorization_code",
+        redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+      },
+    });
+
+    const { access_token } = tokenRes.data;
+
+    // 2. Get user info
+    const userInfoRes = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    const { id: googleId, email, name , picture} = userInfoRes.data;
+
+
+    // 3. Check DB
+    let user = await User.findOne({ email });
+
+    if (!user) {
+        user = new User({ email, name, googleId, profilePic:picture });
+        await user.save();
+    } else if (!user.googleId) {
+        user.googleId = googleId;
+        await user.save();
+    }
+
+    // 4. Create JWT
+    createJWTToken(user,res)
+    // 5. Redirect to frontend with token
+    res.redirect(`http://localhost:5173/`);
+  } catch (err) {
+        console.error("Google login error", err.message);
+        res.status(500).send("Login failed");
+  }
+}
 

@@ -22,9 +22,8 @@ io.on('connection',(socket)=>{
     io.emit('getActiveUsers',Object.keys(userMap));  //io ensures list to be emitted to all socket connections and not only the one newly connected
     
     socket.on('send-message',(msg)=>{
-        
+       
         if(userMap[msg.recieverId]){
-            console.log("message recieved and sending from server");
             io.to(userMap[msg.recieverId]).emit('receive-message',msg);
         }
 

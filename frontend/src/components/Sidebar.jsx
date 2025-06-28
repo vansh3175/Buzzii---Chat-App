@@ -4,13 +4,17 @@ import { setMessages, setSelectedUser, setUsers, addUser } from "../store/chatSl
 import axios from "axios";
 import { Dot } from "lucide-react";
 import { getSocket } from "../util/socketInstance";
+import InitialsAvatar from 'react-initials-avatar';
+import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
 
 function Sidebar() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.chat.users);
   const storeSelected = useSelector((state) => state.chat.selectedUser);
+  const userData = useSelector(state=>state.auth.userData);
   const activeUsers = useSelector((state) => state.auth.activeUsers);
   const socketStatus = useSelector((state) => state.auth.socketStatus);
+  const theme = useSelector(state=>state.theme.theme);
 
   useEffect(() => {
     const cachedUser = localStorage.getItem("selectedUser");
@@ -59,7 +63,7 @@ function Sidebar() {
               <li key={user._id} className="w-full">
                 <div
                   className={`flex items-center gap-4 py-4 px-2 w-full cursor-pointer rounded transition-all duration-100 ease-in-out
-                    ${isActive ? "sm:bg-base-300 sm:border-l-8 sm:border-yellow-500 " : "hover:bg-base-300"}
+                    ${isActive ? " sm:border-l-8 sm:border-yellow-500 " : "hover:bg-base-300"}
                   `}
                   onClick={() => changeSelected(user)}
                 >
@@ -70,13 +74,39 @@ function Sidebar() {
                         className={`absolute -bottom-6 -right-6  ${activeUsers.includes(user._id)?"text-green-400":"text-red-600"}`}
                       />
                     
-                    <div className={`w-14 rounded-full overflow-hidden border-2 border-gray-300 ${isActive?"border-4 border-warning rounded-full sm:border-0":""}`}>
-                      <img src={user.profilePic} alt={user.name} />
+                    <div className={`w-14 h-14 rounded-full overflow-hidden border-2 border-gray-300 ${isActive ? "border-4 border-warning" : ""}`}>
+                      {user.profilePic ? (
+                        <img src={user.profilePic} alt={user.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <InitialsAvatar name={user.name} className="w-full h-full flex items-center justify-center text-3xl"/>
+                      )}
                     </div>
                   </div>
-                  <span className="font-semibold text-lg hidden sm:inline">
-                    {user.name}
-                  </span>
+                 <div className="hidden sm:flex flex-col overflow-hidden w-full">
+                    <p className="font-semibold text-lg">{user.name}</p>
+                    <p
+                      className={`text-sm overflow-hidden whitespace-nowrap text-ellipsis ${theme=='dark'?"text-gray-200":"text-gray-800"}
+                      }`}
+                    >
+                    {
+                      user.lastMsg?(
+
+                        (user._id===user.lastMsg.senderId)?(
+                          user.lastMsg.img?(
+                          user.lastMsg.text?(`You : [IMAGE] ${user.lastMsg.text}`):("You : [IMAGE]")
+                        ):(`You : ${user.lastMsg.text}`)
+                        ):(
+                          user.lastMsg.img?(
+                          user.lastMsg.text?(`[IMAGE] ${user.lastMsg.text}`):("[IMAGE]")
+                        ):(user.lastMsg.text)
+                        )
+                      ):(
+                        ""
+                      )
+                    }
+                    </p>
+                  </div>
+
                 </div>
                 <hr className="hidden sm:block text-gray-500" />
               </li>

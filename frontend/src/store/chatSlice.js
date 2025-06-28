@@ -5,6 +5,8 @@ const initialState = {
     selectedUser: null,
     messages: [],
     messageSending:false,
+    usersLoading:false,
+    messagesLoading:false,
 };
 
 const chatSlice = createSlice({
@@ -28,10 +30,16 @@ const chatSlice = createSlice({
         },
         setMessageSending:(state,action)=>{
             state.messageSending=action.payload.status;
+        },
+        setUsersLoading:(state,action)=>{
+            state.usersLoading=action.payload.status
+        },
+        setMessagesLoading:(state,action)=>{
+            state.messagesLoading=action.payload.status
         }
     },
 });
 
 export default chatSlice.reducer;
 
-export const { setUsers, addUser, setSelectedUser, setMessages, addMessage,setMessageSending } = chatSlice.actions;
+export const { setUsers, addUser, setSelectedUser, setMessages, addMessage,setMessageSending, setUsersLoading, setMessagesLoading } = chatSlice.actions;

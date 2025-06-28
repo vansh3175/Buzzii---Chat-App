@@ -24,7 +24,7 @@ const SignupForm = forwardRef(({handleSubmit, className = 'w-full md:w-1/2'  },r
 
         <div className="flex flex-col w-full max-w-sm space-y-4">
           <div>
-            <label className="label text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="label text-sm font-medium text-gray-400">
               Name
             </label>
             <input
@@ -37,7 +37,7 @@ const SignupForm = forwardRef(({handleSubmit, className = 'w-full md:w-1/2'  },r
           </div>
 
           <div>
-            <label className="label text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="label text-sm font-medium text-gray-400">
               Email
             </label>
             <input
@@ -50,7 +50,7 @@ const SignupForm = forwardRef(({handleSubmit, className = 'w-full md:w-1/2'  },r
           </div>
 
           <div>
-            <label className="label text-sm font-medium ">
+            <label className="label text-sm font-medium text-gray-400">
               Password
             </label>
             <div className={`w-full border ${useSelector(state=>state.theme.theme)=='dark'?"border-gray-600":"border-gray-300"} rounded-md shadow-sm focus-within:border-amber-400 flex items-center`}>
@@ -75,10 +75,23 @@ const SignupForm = forwardRef(({handleSubmit, className = 'w-full md:w-1/2'  },r
 
           <div className="flex justify-center text-sm">
             <p className="text-gray-600 dark:text-gray-400">Already have an account? &nbsp;</p>
-            <Link to="/login" className="text-amber-500 font-medium">
+            <Link to="/login" className="text-amber-500 font-medium hover:text-blue-500">
               Login
             </Link>
           </div>
+
+          <button
+          type="button"
+          onClick={() => window.location.href = "http://localhost:5000/user/google/login"}
+          className="btn flex items-center justify-center gap-2 border border-gray-400  py-2 rounded-md transition transform hover:scale-105"
+        >
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google Logo"
+            className="h-5 w-5"
+          />
+          <span>Sign in with Google</span>
+        </button>
         </div>
       </form>
     </div>

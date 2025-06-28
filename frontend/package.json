@@ -17,6 +17,8 @@
     "lucide-react": "^0.518.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-initials-avatar": "^1.1.2",
+    "react-name-initials-avatar": "^0.0.7",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
     "socket.io-client": "^4.8.1",

@@ -33,7 +33,13 @@ export default function Profile() {
 
                 <div className="relative w-40 h-40 shrink-0 rounded-full ring-4 ring-primary/30 hover:ring-primary/50 transition duration-300">
                     <img
-                        src={userData?.profilePic}
+                        src={
+                        userData
+                            ? userData.profilePic
+                            ? userData.profilePic
+                            : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                            : ""
+                        }
                         alt={userData?.name}
                         className="rounded-full w-full h-full object-cover"
                     />

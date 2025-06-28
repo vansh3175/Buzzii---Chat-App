@@ -7,6 +7,9 @@ import { Moon, Sun,LogOut } from "lucide-react";
 import {logout} from "../store/authSlice"
 import axios from "axios";
 import { setMessages, setSelectedUser } from "../store/chatSlice";
+import InitialsAvatar from 'react-initials-avatar';
+import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
+
 
 export default function NavBar(){
     const authStatus = useSelector((state)=>state.auth.status);
@@ -49,14 +52,14 @@ export default function NavBar(){
     }
 
     return (
-        <div className="navbar bg-warning w-full h-16 flex justify-between px-6 py-10">
+        <div className="navbar bg-warning w-full h-16 flex justify-between sm:px-6 py-10 px-2">
             <div className="navbar-start">
                 <Link to="/">
                     <h1 className="font-bold italic text-black text-3xl">Buzzii</h1>
                 </Link>
             </div>
-            <div className="navbar-end px-4" >
-                <button className="m-4  rounded-3xl p-4 cursor-pointer hover:bg-amber-500 ease-in duration-200 " onClick={()=>{
+            <div className="navbar-end sm:px-4 px-1" >
+                <button className="m-4  rounded-3xl sm:px-4 py-4 px-2 cursor-pointer hover:bg-amber-500 ease-in duration-200 " onClick={()=>{
                     changeTheme();
                     dispatch(setTheme({theme:(theme=='dark'?'light':'dark')}))
             }}>
@@ -73,8 +76,8 @@ export default function NavBar(){
                 {
                     !authStatus?(
                         <>
-                        <button className="btn btn-warning hover:bg-amber-500  border-0 text-2xl ease-in duration-200 text-black p-4 m-4 py-8 rounded-2xl" onClick={()=>{navigate('/login')} }>Login</button>
-                        <button className="btn btn-warning hover:bg-amber-500  border-0 text-2xl ease-in duration-200 text-black p-4 m-4 py-8 rounded-2xl" onClick={()=>{navigate('/signup')}}>Register</button>
+                        <button className="btn btn-warning hover:bg-amber-500  border-0 text-2xl ease-in duration-200 text-black sm:p-4 m-4 py-8 rounded-2xl px-1" onClick={()=>{navigate('/login')} }>Login</button>
+                        <button className="btn btn-warning hover:bg-amber-500  border-0 text-2xl ease-in duration-200 text-black sm:p-4 m-4 py-8 rounded-2xl px-1" onClick={()=>{navigate('/signup')}}>Register</button>
                         </>
                         
                     )
@@ -88,8 +91,14 @@ export default function NavBar(){
 
                     }}
                     >
-               
+                        {userData.profilePic ? (
                         <img src={userData.profilePic} alt={userData.name} className="rounded-full h-12 w-12"/>
+                      ) : (
+                        <div className="border-2 rounded-full h-15 w-15">
+                            <InitialsAvatar name={userData.name} className="w-full h-full flex items-center justify-center"/>
+                        </div>
+                      )}
+                        
                         <span className="text-2xl text-black font-semibold hidden md:inline px-1">Profile</span>
                     </button>
                         </>

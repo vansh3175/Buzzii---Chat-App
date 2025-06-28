@@ -22,4 +22,10 @@ router.route('/getUsers')
 router.route('/updateProfilePic')
 .post(authCheck,upload.single('img'),userController.updatePhoto);
 
+router.route('/google/login')
+.get(userController.googleLogin);
+
+router.route('/google/callback')
+.get(userController.googleCallback);
+
 module.exports = router;

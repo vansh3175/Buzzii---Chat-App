@@ -37,7 +37,8 @@ const router = createBrowserRouter([
       <AuthLayout>
         <Profile/>
       </AuthLayout>
-    }]
+    }
+  ]
   }
 ])
 

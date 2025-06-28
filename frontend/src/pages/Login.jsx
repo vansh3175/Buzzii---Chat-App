@@ -10,6 +10,7 @@ import { setSelectedUser, setUsers } from "../store/chatSlice";
 
 
 
+
 export default function Login() {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
@@ -40,7 +41,6 @@ export default function Login() {
         .catch((err)=>{
             console.log(err);
         })
-
 
         
         console.log("successful login");

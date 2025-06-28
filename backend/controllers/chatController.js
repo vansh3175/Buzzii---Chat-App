@@ -9,10 +9,13 @@ module.exports.getMessages = async (req,res)=>{
     result = result.filter((val)=>{
         return (val.senderId==firstUser && val.recieverId==secondUser) || (val.senderId==secondUser && val.recieverId==firstUser)
     })
+
+    result.sort((a,b)=>(new Date(a.createdAt) - new Date(b.createdAt))); // in order to access last msg diff means desc
     
     res.status(200).json({messages:result});
 
 }
+
 
 module.exports.sendMessage = async ( req,res)=>{
     const {id} = req.params;
