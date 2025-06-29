@@ -91,13 +91,26 @@ export default function NavBar(){
 
                     }}
                     >
-                        {userData.profilePic ? (
-                        <img src={userData.profilePic} alt={userData.name} className="rounded-full h-12 w-12"/>
-                      ) : (
-                        <div className="border-2 rounded-full h-15 w-15">
-                            <InitialsAvatar name={userData.name} className="w-full h-full flex items-center justify-center"/>
-                        </div>
-                      )}
+                        <div className="relative inline-block">
+                            {userData.profilePic ? (
+                                <img
+                                src={userData.profilePic}
+                                alt={userData.name}
+                                className="rounded-full h-12 w-12"
+                                />
+                            ) : (
+                                <div className="border-2 rounded-full h-12 w-12 flex items-center justify-center bg-gray-100">
+                                <InitialsAvatar name={userData.name} className="text-sm font-medium" />
+                                </div>
+                            )}
+
+                            {userData.recievedRequests.length > 0 && (
+                                <div className=" absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white rounded-full text-xs px-2 py-0.5 z-20">
+                                {userData.recievedRequests.length}
+                                </div>
+                            )}
+                            </div>
+
                         
                         <span className="text-2xl text-black font-semibold hidden md:inline px-1">Profile</span>
                     </button>

@@ -1,20 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect,forwardRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setMessages, setSelectedUser, setUsers, addUser } from "../store/chatSlice";
+import { setMessages, setSelectedUser, addUser } from "../store/chatSlice";
 import axios from "axios";
-import { Dot } from "lucide-react";
+import { Dot,Plus } from "lucide-react";
 import { getSocket } from "../util/socketInstance";
 import InitialsAvatar from 'react-initials-avatar';
 import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
 
-function Sidebar() {
-  const dispatch = useDispatch();
-  const users = useSelector((state) => state.chat.users);
-  const storeSelected = useSelector((state) => state.chat.selectedUser);
+const Sidebar = forwardRef(({modalhandler},ref) =>{
   const userData = useSelector(state=>state.auth.userData);
+  const dispatch = useDispatch();
+  const users = userData?(userData.friends):[];
+  const storeSelected = useSelector((state) => state.chat.selectedUser);
   const activeUsers = useSelector((state) => state.auth.activeUsers);
   const socketStatus = useSelector((state) => state.auth.socketStatus);
   const theme = useSelector(state=>state.theme.theme);
+  
 
   useEffect(() => {
     const cachedUser = localStorage.getItem("selectedUser");
@@ -50,9 +51,19 @@ function Sidebar() {
   };
 
   return (
-    <div className="sm:w-1/3 w-fit min-w-20 sm:min-w-50 max-w-80 sm:h-[calc(100vh-5rem)] overflow-y-auto bg-base-100 sm:p-4 py-20 sm:py-4 border-r border-gray-500 overflow-hidden">
+    <div className="sm:w-1/3 w-fit min-w-20 sm:min-w-50 max-w-80 h-[calc(100vh-5rem)] overflow-y-auto bg-base-100 sm:p-4  sm:py-4 border-r border-gray-500 overflow-hidden p-2">
+      <button
+      className="bg-warning text-black w-full rounded-md text-2xl font-semibold p4 my-4 cursor-pointer hidden sm:inline hover:bg-amber-500 "
+      ref={ref}
+      onClick={modalhandler}
+      >Add friends</button>
+      <button
+      className="bg-warning text-black w-full rounded-md text-2xl font-semibold p4 my-4 cursor-pointer  sm:hidden flex justify-center items-center hover:bg-amber-500"
+      ref={ref}
+      onClick={modalhandler}
+      ><Plus size={40}/></button>
       {users.length === 0 ? (
-        <div className="text-center text-gray-500 py-10 text-lg h-full flex items-center">
+        <div className="text-center text-gray-500 py-10 text-lg  flex items-center">
           Your friends will show here 😎
         </div>
       ) : (
@@ -62,7 +73,7 @@ function Sidebar() {
             return (
               <li key={user._id} className="w-full">
                 <div
-                  className={`flex items-center gap-4 py-4 px-2 w-full cursor-pointer rounded transition-all duration-100 ease-in-out
+                  className={`flex items-center justify-center gap-4 py-4 px-2 w-full cursor-pointer rounded transition-all duration-100 ease-in-out
                     ${isActive ? " sm:border-l-8 sm:border-yellow-500 " : "hover:bg-base-300"}
                   `}
                   onClick={() => changeSelected(user)}
@@ -116,6 +127,6 @@ function Sidebar() {
       )}
     </div>
   );
-}
+})
 
 export default Sidebar;

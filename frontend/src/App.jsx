@@ -20,8 +20,9 @@ function App() {
     if(authStatus && !socketInstance){
       const socket = io('http://localhost:5000', {
       withCredentials: true,
-      query:{
-        userId:userData._id
+      query: {
+        userId: userData._id,
+        friends: JSON.stringify(userData.friends) // only strings are allowed
       }
       });
       

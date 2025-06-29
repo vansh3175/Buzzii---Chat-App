@@ -6,6 +6,7 @@ import { setMessages, setMessageSending, setUsers } from "../store/chatSlice";
 import {motion,AnimatePresence} from 'framer-motion'
 import { XCircle } from "lucide-react";
 import { getSocket } from "../util/socketInstance";
+import { setProfile } from "../store/authSlice";
 
 
 function ChatTypeArea() {
@@ -19,7 +20,8 @@ function ChatTypeArea() {
   const selectedUser = useSelector((state) => state.chat.selectedUser);
   const selectedUserId = selectedUser._id;
   const messages = useSelector((state) => state.chat.messages);
-  const users = useSelector((state)=>state.chat.users);
+  const userData = useSelector((state)=>state.auth.userData);
+  const users = userData?.friends;
   const theme = useSelector((state) => state.theme.theme); // 'dark' or 'light'
 
   const handleSubmit = (e) => {
@@ -55,12 +57,12 @@ function ChatTypeArea() {
         setPreview(null);
         dispatch(setMessages({ messages: [...messages, res.data.chat] }));
         dispatch(setMessageSending({status:false}));
-        const updateUsers = users.map((user)=>{
+        const updatedUsers = users.map((user)=>{
           if(user._id!==selectedUser._id) return user;
           else return {...user,lastMsg:res.data.chat}
         });
         
-        dispatch(setUsers({users:updateUsers}));
+        dispatch(setProfile({userData:{...userData,friends:updatedUsers}}));
         if(getSocket()){
           
           getSocket().emit('send-message',res.data.chat);
@@ -104,7 +106,7 @@ function ChatTypeArea() {
       
       <div className="w-full bg-base-100 h-12 z-10">
         <form onSubmit={handleSubmit} className="flex items-center h-full px-2">
-          <label htmlFor="fileUpload" className="px-3 cursor-pointer">
+          <label htmlFor="fileUpload" className="px-3 cursor-pointer hover:text-blue-600 ease-in duration-200 hover:scale-105">
             <Image />
           </label>
           <input
@@ -137,7 +139,7 @@ function ChatTypeArea() {
             placeholder="Type a message"
             className={`flex-1 focus:outline-none bg-transparent ${theme=='dark'?"caret-amber-50":"caret-black"}`}
           />
-          <button type="submit" className="px-3 cursor-pointer "
+          <button type="submit" className="px-3 cursor-pointer hover:text-green-600 ease-in duration-200 hover:scale-105 "
           disabled={messageSendingStatus}
           >
             <LucideSendHorizonal />

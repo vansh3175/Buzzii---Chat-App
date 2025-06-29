@@ -49,7 +49,6 @@ export default function Signup() {
     .then((res)=>{
       console.log(res.data.user);
       dispatch(login({userData:res.data.user}));
-      dispatch(setUsers({users:[...users,res.data.user]}))
       if(localStorage.getItem('selectedUser')) localStorage.removeItem('selectedUser');
       navigate('/');
       //could emit from socket as socket not created yet so
