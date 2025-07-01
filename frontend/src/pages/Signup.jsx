@@ -46,7 +46,7 @@ export default function Signup() {
       return;
     }
     const userData = {name,email,password};
-    axios.post('http://localhost:5000/user/signup' ,userData,{withCredentials:true})
+    axios.post(`${import.meta.env.VITE_BACKEND_URI}/user/signup` ,userData,{withCredentials:true})
     .then((res)=>{
       console.log(res.data.user);
       dispatch(login({userData:res.data.user}));

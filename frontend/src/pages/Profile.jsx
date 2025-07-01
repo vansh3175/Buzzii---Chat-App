@@ -11,7 +11,7 @@ export default function Profile() {
     const uploadPhoto = (file) => {
         const data = new FormData();
         data.append("img", file);
-        axios.post('http://localhost:5000/user/updateProfilePic', data, { withCredentials: true })
+        axios.post(`${import.meta.env.VITE_BACKEND_URI}user/updateProfilePic`, data, { withCredentials: true })
             .then((res) => {
                 dispatch(setProfile({ userData: res.data.result }));
                 toast.success(res.data.msg)
@@ -24,7 +24,7 @@ export default function Profile() {
     const handleAccept = async (senderId) => {
         try {
             const res = await axios.get(
-                `http://localhost:5000/user/acceptReq/${senderId}`,
+                `${import.meta.env.VITE_BACKEND_URI}/user/acceptReq/${senderId}`,
                 { withCredentials: true }
             );
             
@@ -39,7 +39,7 @@ export default function Profile() {
     const handleReject = async (senderId) => {
         try {
             const res = await axios.get(
-                `http://localhost:5000/user/rejectReq/${senderId}`,
+                `${import.meta.env.VITE_BACKEND_URI}/rejectReq/${senderId}`,
                 { withCredentials: true }
             );
             dispatch(setProfile({ userData: res.data.result }));

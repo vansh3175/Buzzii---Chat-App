@@ -29,7 +29,7 @@ const Sidebar = forwardRef(({modalhandler},ref) =>{
       dispatch(setSelectedUser({ user: JSON.parse(cachedUser) }));
     }
 
-    axios.get('http://localhost:5000/chatStatus/unseenCount', {
+    axios.get(`${import.meta.env.VITE_BACKEND_URI}/chatStatus/unseenCount`, {
       withCredentials: true,
     })
     .then((res)=>{
@@ -53,7 +53,7 @@ const Sidebar = forwardRef(({modalhandler},ref) =>{
   useEffect(() => {
     if (storeSelected) {
       axios
-        .get(`http://localhost:5000/chat/${storeSelected._id}`, {
+        .get(`${import.meta.env.VITE_BACKEND_URI}/chat/${storeSelected._id}`, {
           withCredentials: true,
         })
         .then((res) => dispatch(setMessages({ messages: res.data.messages })))
@@ -62,7 +62,7 @@ const Sidebar = forwardRef(({modalhandler},ref) =>{
         // Update last seen
       axios
         .post(
-          `http://localhost:5000/chatStatus/updateLastSeen`,
+          `h${import.meta.env.VITE_BACKEND_URI}/chatStatus/updateLastSeen`,
           { chatWith: storeSelected._id },
           { withCredentials: true }
         )

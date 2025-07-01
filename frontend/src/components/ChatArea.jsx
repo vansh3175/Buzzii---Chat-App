@@ -68,7 +68,7 @@ function ChatArea() {
   }, [socketStatus]);
 
   const handleRemoveFriend = (userId) => {
-    axios.get(`http://localhost:5000/user/removeFriend/${userId}`,{withCredentials:true})
+    axios.get(`${import.meta.env.VITE_BACKEND_URI}/user/removeFriend/${userId}`,{withCredentials:true})
     .then((res)=>{
       dispatch(setProfile({userData:res.data.result}));
       dispatch(setSelectedUser({user:null}));

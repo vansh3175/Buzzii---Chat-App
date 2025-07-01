@@ -32,7 +32,7 @@ export default function Login() {
 
         const userData = {email,password};
 
-        axios.post('http://localhost:5000/user/login' ,userData,{withCredentials:true})
+        axios.post(`${import.meta.env.VITE_BACKEND_URI}/user/login `,userData,{withCredentials:true})
         .then((res)=>{
             console.log(res.data.user);
             dispatch(login({userData:res.data.user}))

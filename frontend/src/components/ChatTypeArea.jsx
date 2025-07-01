@@ -39,7 +39,7 @@ function ChatTypeArea() {
 
     axios
       .post(
-        `http://localhost:5000/chat/${selectedUserId}`,
+        `${import.meta.env.VITE_BACKEND_URI}/chat/${selectedUserId}`,
         formData,
         {
           headers:

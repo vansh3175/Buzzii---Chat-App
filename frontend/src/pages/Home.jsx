@@ -31,7 +31,7 @@ export default function Home(){
     }
 
     const handleSendRequest = async (userId)=>{
-        await axios.get(`http://localhost:5000/user/sendReq/${userId}`,{withCredentials:true})
+        await axios.get(`${import.meta.env.VITE_BACKEND_URI}/user/sendReq/${userId}`,{withCredentials:true})
         .then((res)=>{
             setSendReqInfo(prev=>([...prev,userId]));
             dispatch(setProfile({userData:res.data.userData}));
@@ -46,7 +46,7 @@ export default function Home(){
         if(modalInput!=""){
             const timeoutId = setTimeout(()=>{
             const q = modalInput.trim();
-            axios.get(`http://localhost:5000/user/getUsers?query=${q}`,{withCredentials:true})
+            axios.get(`${import.meta.env.VITE_BACKEND_URI}/user/getUsers?query=${q}`,{withCredentials:true})
             .then((res)=>{
                 setOutput(res.data.users);
             })
@@ -76,7 +76,7 @@ export default function Home(){
             users.map(async (user) => {
             try {
                 
-                const result =  await axios.get(`http://localhost:5000/chat/${user._id}`, {withCredentials: true,});
+                const result =  await axios.get(`${import.meta.env.VITE_BACKEND_URI}/chat/${user._id}`, {withCredentials: true,});
                 
                 return { ...user, lastMsg: result.data.messages[result.data.messages.length-1] };
             } catch (err) {

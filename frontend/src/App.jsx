@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     if(authStatus && !socketInstance){
-      const socket = io('http://localhost:5000', {
+      const socket = io(import.meta.env.VITE_BACKEND_URI, {
       withCredentials: true,
       query: {
         userId: userData._id,
@@ -47,7 +47,7 @@ function App() {
 
   useEffect(()=>{
     dispatch(setLoading({loading:true}));
-    axios.get('http://localhost:5000/user/getUserData',{withCredentials:true})
+    axios.get(`${import.meta.env.VITE_BACKEND_URI}/user/getUserData`,{withCredentials:true})
     .then((res)=>{
       const data = res.data.userData
       if(data){

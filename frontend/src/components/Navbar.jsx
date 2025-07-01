@@ -39,7 +39,7 @@ export default function NavBar(){
     },[])
 
     const handleLogout = ()=>{
-        axios.get('http://localhost:5000/user/logout',{withCredentials:true})
+        axios.get(`${import.meta.env.VITE_BACKEND_URI}/user/logout`,{withCredentials:true})
         .then((res)=>{
             navigate('/login');
             localStorage.removeItem('selectedUser');
