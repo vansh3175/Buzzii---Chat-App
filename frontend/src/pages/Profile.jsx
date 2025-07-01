@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Camera } from "lucide-react";
 import axios from "axios";
 import { setProfile } from "../store/authSlice";
+import toast from "react-hot-toast";
 
 export default function Profile() {
     const userData = useSelector((state) => state.auth.userData);
@@ -13,9 +14,10 @@ export default function Profile() {
         axios.post('http://localhost:5000/user/updateProfilePic', data, { withCredentials: true })
             .then((res) => {
                 dispatch(setProfile({ userData: res.data.result }));
+                toast.success(res.data.msg)
             })
             .catch((err) => {
-                console.error(err);
+                toast.err(res.data.msg);
             });
     };
 
@@ -25,10 +27,12 @@ export default function Profile() {
                 `http://localhost:5000/user/acceptReq/${senderId}`,
                 { withCredentials: true }
             );
-            console.log(res.data.result);
+            
             dispatch(setProfile({ userData: res.data.result }));
+            toast.success(res.data.msg);
         } catch (err) {
             console.error("Accept failed:", err);
+            toast.err(res.data.msg);
         }
     };
 
@@ -39,8 +43,9 @@ export default function Profile() {
                 { withCredentials: true }
             );
             dispatch(setProfile({ userData: res.data.result }));
+            toast.success(res.data.msg);
         } catch (err) {
-            console.error("Reject failed:", err);
+            toast.err(res.data.msg);
         }
     };
 

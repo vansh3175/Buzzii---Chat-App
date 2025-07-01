@@ -10,6 +10,7 @@ import { setSelectedUser, setUsers } from "../store/chatSlice";
 import { getSocket } from "../util/socketInstance";
 import { useState } from "react";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function Signup() {
 
@@ -39,16 +40,17 @@ export default function Signup() {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
-    console.log({email,password,name});
 
     if(!email || !name || !password){
-      return alert("fill all details");
+      toast.error("Fill all details");
+      return;
     }
     const userData = {name,email,password};
     axios.post('http://localhost:5000/user/signup' ,userData,{withCredentials:true})
     .then((res)=>{
       console.log(res.data.user);
       dispatch(login({userData:res.data.user}));
+      toast.success(res.data.msg);
       if(localStorage.getItem('selectedUser')) localStorage.removeItem('selectedUser');
       navigate('/');
       //could emit from socket as socket not created yet so
@@ -56,19 +58,19 @@ export default function Signup() {
 
     })
     .catch((err)=>{
-      console.log(err);
+      toast.error(err.response.data.msg)
     })
  }
 
     return (
         <div className="flex flex-wrap-reverse min-h-[calc(100vh-5rem)]">
   
-  <div className="md:w-2/3 lg:w-1/2 w-full  flex items-center justify-center py-8 lg:px-0 md:p-2">
+  <div className="  md:w-2/3 lg:w-1/2 w-full  flex items-center justify-center py-8 lg:px-0 md:p-2">
     <SignupForm handleSubmit={handleSubmit} ref={{nameRef,emailRef,passwordRef}}/>
   </div>
 
   
-  <div className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center justify-center text-center px-4 sm:px-8 py-8">
+  <div className="hidden w-full md:w-1/3 lg:w-1/2 md:flex flex-col items-center justify-center text-center px-4 sm:px-8 py-8">
     <motion.div
       animate={{ y: [0, -10, 0] }}
       transition={{ duration: 2, repeat: Infinity }}

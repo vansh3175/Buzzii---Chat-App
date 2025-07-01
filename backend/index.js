@@ -5,6 +5,7 @@ const {Server} = require('socket.io')
 const { connectDb } = require('./lib/db');
 const userRouter = require('./routes/userRoutes');
 const chatRouter = require('./routes/chatRoutes')
+const chatStatusRouter = require('./routes/chatStatusRoutes')
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 const {app,server} = require('./lib/socket')
@@ -28,6 +29,7 @@ server.listen(process.env.PORT || 5000, () => {
 
 app.use('/user',userRouter);
 app.use('/chat',chatRouter);
+app.use('/chatStatus',chatStatusRouter)
 // app.all('*',(req,res)=>{
 //     res.status(404).json("page not found");
 // })

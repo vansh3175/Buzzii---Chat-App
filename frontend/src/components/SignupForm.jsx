@@ -32,7 +32,7 @@ const SignupForm = forwardRef(({handleSubmit, className = 'w-full md:w-1/2'  },r
               className="input w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  focus:border-amber-400"
               placeholder="Full Name"
               ref={nameRef}
-              required
+              
             />
           </div>
 
@@ -45,7 +45,7 @@ const SignupForm = forwardRef(({handleSubmit, className = 'w-full md:w-1/2'  },r
               className="input w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  focus:border-amber-400"
               placeholder="Email"
               ref={emailRef}
-              required
+              
             />
           </div>
 
@@ -59,7 +59,7 @@ const SignupForm = forwardRef(({handleSubmit, className = 'w-full md:w-1/2'  },r
                 className="input w-full  px-3 py-2 border-none rounded-md outline-none shadow-none focus:border-none focus:outline-none"
                 placeholder="Password"
                 ref={passwordRef}
-                required
+                
               />
               <div onClick={togglePass} className="px-3 cursor-pointer text-gray-400">
                 {showPass ? <Eye /> : <EyeOff />}

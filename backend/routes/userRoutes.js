@@ -19,6 +19,15 @@ router.route('/getUserData')
 router.route('/getUsers')
 .get(authCheck,userController.getUsers);
 
+router.route('/sendReq/:id')
+.get(authCheck,userController.sendReq);
+router.route('/acceptReq/:id')
+.get(authCheck,userController.acceptReq);
+router.route('/rejectReq/:id')
+.get(authCheck,userController.rejectReq);
+router.route('/removeFriend/:id')
+.get(authCheck,userController.deleteFriend);
+
 router.route('/updateProfilePic')
 .post(authCheck,upload.single('img'),userController.updatePhoto);
 

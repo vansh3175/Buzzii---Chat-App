@@ -17,9 +17,12 @@ io.on('connection',(socket)=>{
     console.log("user connected",socket.id);
 
     userMap[socket.handshake.query.userId] = socket.id
+    const userFriends = JSON.parse(socket.handshake.query.friends || '[]');
     // console.log('User Id',socket.handshake.query.userId)     
 
-    io.emit('getActiveUsers',Object.keys(userMap));  //io ensures list to be emitted to all socket connections and not only the one newly connected
+    const friendIds = new Set(userFriends.map(friend => friend._id));
+    const onlineFriends = Object.keys(userMap).filter(id => friendIds.has(id));
+    socket.emit("getActiveUsers", [...onlineFriends,]);  //io ensures list to be emitted to all socket connections and not only the one newly connected
     
     socket.on('send-message',(msg)=>{
        
@@ -37,7 +40,7 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         console.log("user disconnected",socket.id);
         delete userMap[socket.handshake.query.userId]
-        io.emit('getActiveUsers',Object.keys(userMap));  //io ensures list to be emitted to all socket connections and not only the one newly connected
+        socket.emit('getActiveUsers',Object.keys(userMap));  //io ensures list to be emitted to all socket connections and not only the one newly connected
 
     })
 

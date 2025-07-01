@@ -2,7 +2,7 @@ import React, { useRef, useEffect,useState} from "react";
 import { useSelector, useDispatch, useStore } from "react-redux";
 import dateParser from "../util/dateParser";
 import { getSocket } from "../util/socketInstance";
-import { addMessage, setSelectedUser, setUsers } from "../store/chatSlice";
+import { addMessage, setSelectedUser, setUnseenCount, setUsers } from "../store/chatSlice";
 import InitialsAvatar from "react-initials-avatar";
 import "react-initials-avatar/lib/ReactInitialsAvatar.css";
 import { setProfile } from "../store/authSlice";
@@ -30,12 +30,22 @@ function ChatArea() {
     if (socketStatus) {
       const socket = getSocket();
       socket.on("receive-message", (msg) => {
+        const state = store.getState();
+        const storeSelected = state.chat.selectedUser;
         if (msg.recieverId === currentUser._id) {
-          if (msg.senderId === selectedUser._id) {
+          if (storeSelected && msg.senderId === storeSelected._id) {
             dispatch(addMessage({ msg }));
+          }else{
+            
+            const unseen = state.chat.unseenCount;
+            const currentCount = unseen[msg.senderId] || 0;
+            console.log("entered")
+            const updatedCount = {...unseen,[msg.senderId]:currentCount+1};
+            dispatch(setUnseenCount({unseenCount:updatedCount}))
           }
 
-          const state = store.getState();
+
+          
           const userData = state.auth.userData;
           const users = userData?.friends || [];
 

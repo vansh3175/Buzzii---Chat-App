@@ -8,6 +8,7 @@ import { setSocket,getSocket,removeSocket } from "./util/socketInstance"
 import {setActiveUsers} from "./store/authSlice"
 import axios from "axios"
 import { useEffect } from "react"
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   
@@ -31,6 +32,7 @@ function App() {
         console.log("Socket connected:", socket.id); 
       })
       socket.on('getActiveUsers',(users)=>{
+          console.log("active users",users)
           dispatch(setActiveUsers({users}));
         })
 
@@ -66,6 +68,7 @@ function App() {
 
   return (
     <div className="w-full h-full overflow-hidden">
+    <div><Toaster/></div>
     <Navbar/>
     <Outlet/>
     </div>

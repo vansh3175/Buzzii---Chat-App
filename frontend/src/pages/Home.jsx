@@ -67,10 +67,10 @@ export default function Home(){
         // add a loader for sidebar (optional)
     const fetchUsersWithLastMessages = async () => {
         try {
-        dispatch(setUsersLoading({ status: true }));
+        
 
-        const res = await axios.get('http://localhost:5000/user/getUsers', { withCredentials: true });
-        const users = res.data.users;
+       
+        const users = userData.friends;
 
         const usersWithLastMsg = await Promise.all(
             users.map(async (user) => {
@@ -86,12 +86,11 @@ export default function Home(){
             })
         );
 
-        dispatch(setUsers({ users: usersWithLastMsg }));
+        dispatch(setProfile({ userData: {...userData,friends:usersWithLastMsg} }));
         } catch (err) {
         console.error("Error fetching users:", err);
-        } finally {
-        dispatch(setUsersLoading({ status: false }));
-        }
+        } 
+        
     };
 
     if (authStatus) {

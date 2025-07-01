@@ -9,6 +9,7 @@ import axios from "axios";
 import { setMessages, setSelectedUser } from "../store/chatSlice";
 import InitialsAvatar from 'react-initials-avatar';
 import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
+import toast from "react-hot-toast";
 
 
 export default function NavBar(){
@@ -39,15 +40,16 @@ export default function NavBar(){
 
     const handleLogout = ()=>{
         axios.get('http://localhost:5000/user/logout',{withCredentials:true})
-        .then(()=>{
+        .then((res)=>{
             navigate('/login');
             localStorage.removeItem('selectedUser');
             dispatch(setSelectedUser({user:null}));
+            toast.success(res.data.msg)
             
             dispatch(logout());
         })
         .catch((err)=>{
-            console.log(err);
+            console.log(err.response.data.msg);
         })
     }
 
@@ -59,7 +61,7 @@ export default function NavBar(){
                 </Link>
             </div>
             <div className="navbar-end sm:px-4 px-1" >
-                <button className="m-4  rounded-3xl sm:px-4 py-4 px-2 cursor-pointer hover:bg-amber-500 ease-in duration-200 " onClick={()=>{
+                <button className="sm:m-4 m-2 rounded-3xl sm:px-4 py-4 px-2 cursor-pointer hover:bg-amber-500 ease-in duration-200 " onClick={()=>{
                     changeTheme();
                     dispatch(setTheme({theme:(theme=='dark'?'light':'dark')}))
             }}>
@@ -76,8 +78,8 @@ export default function NavBar(){
                 {
                     !authStatus?(
                         <>
-                        <button className="btn btn-warning hover:bg-amber-500  border-0 text-2xl ease-in duration-200 text-black sm:p-4 m-4 py-8 rounded-2xl px-1" onClick={()=>{navigate('/login')} }>Login</button>
-                        <button className="btn btn-warning hover:bg-amber-500  border-0 text-2xl ease-in duration-200 text-black sm:p-4 m-4 py-8 rounded-2xl px-1" onClick={()=>{navigate('/signup')}}>Register</button>
+                        <button className="btn btn-warning hover:bg-amber-500  border-0 text-2xl ease-in duration-200 text-black sm:p-4 sm:m-4 m-2 py-8 rounded-2xl px-1" onClick={()=>{navigate('/login')} }>Login</button>
+                        <button className="btn btn-warning hover:bg-amber-500  border-0 text-2xl ease-in duration-200 text-black sm:p-4 sm:m-4 m-2 py-8 rounded-2xl px-1" onClick={()=>{navigate('/signup')}}>Register</button>
                         </>
                         
                     )
@@ -92,17 +94,11 @@ export default function NavBar(){
                     }}
                     >
                         <div className="relative inline-block">
-                            {userData.profilePic ? (
-                                <img
-                                src={userData.profilePic}
+                            <img
+                                src={userData.profilePic?userData.profilePic:"https://cdn-icons-png.flaticon.com/512/847/847969.png"}
                                 alt={userData.name}
                                 className="rounded-full h-12 w-12"
                                 />
-                            ) : (
-                                <div className="border-2 rounded-full h-12 w-12 flex items-center justify-center bg-gray-100">
-                                <InitialsAvatar name={userData.name} className="text-sm font-medium" />
-                                </div>
-                            )}
 
                             {userData.recievedRequests.length > 0 && (
                                 <div className=" absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white rounded-full text-xs px-2 py-0.5 z-20">

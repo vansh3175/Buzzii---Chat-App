@@ -7,6 +7,7 @@ const initialState = {
     messageSending:false,
     usersLoading:false,
     messagesLoading:false,
+    unseenCount:{} //friend:count
 };
 
 const chatSlice = createSlice({
@@ -36,10 +37,13 @@ const chatSlice = createSlice({
         },
         setMessagesLoading:(state,action)=>{
             state.messagesLoading=action.payload.status
+        },
+        setUnseenCount:(state,action)=>{
+            state.unseenCount=action.payload.unseenCount
         }
     },
 });
 
 export default chatSlice.reducer;
 
-export const { setUsers, addUser, setSelectedUser, setMessages, addMessage,setMessageSending, setUsersLoading, setMessagesLoading } = chatSlice.actions;
+export const { setUsers, addUser, setSelectedUser, setMessages, addMessage,setMessageSending, setUsersLoading, setMessagesLoading ,setUnseenCount} = chatSlice.actions;
