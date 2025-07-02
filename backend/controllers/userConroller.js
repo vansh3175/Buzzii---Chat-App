@@ -152,7 +152,7 @@ module.exports.googleCallback = async (req, res) => {
     }
 
     createJWTToken(user, res);
-    res.redirect(`http://localhost:5173/`);
+    res.redirect(`https://buzzii-chat-app.vercel.app//`);
   } catch (err) {
     console.error("Google login error", err.message);
     res.status(500).send("Login failed");
