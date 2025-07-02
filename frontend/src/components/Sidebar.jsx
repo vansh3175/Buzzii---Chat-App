@@ -62,7 +62,7 @@ const Sidebar = forwardRef(({modalhandler},ref) =>{
         // Update last seen
       axios
         .post(
-          `h${import.meta.env.VITE_BACKEND_URI}/chatStatus/updateLastSeen`,
+          `${import.meta.env.VITE_BACKEND_URI}/chatStatus/updateLastSeen`,
           { chatWith: storeSelected._id },
           { withCredentials: true }
         )
