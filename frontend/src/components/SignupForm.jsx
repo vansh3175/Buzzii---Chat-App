@@ -82,7 +82,7 @@ const SignupForm = forwardRef(({handleSubmit, className = 'w-full md:w-1/2'  },r
 
           <button
           type="button"
-          onClick={() => window.location.href = "http://localhost:5000/user/google/login"}
+          onClick={() => window.location.href = `${import.meta.env.VITE_BACKEND_URI}/user/google/login`}
           className="btn flex items-center justify-center gap-2 border border-gray-400  py-2 rounded-md transition transform hover:scale-105"
         >
           <img
