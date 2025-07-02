@@ -101,7 +101,12 @@ module.exports.getUsers = async (req, res) => {
 
 module.exports.logout = (req, res) => {
   try {
-    res.cookie('jwt', '', { maxAge: 0 });
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: true, 
+      sameSite: 'None', 
+      path: '/', 
+    });
     res.status(200).json({ msg: "logged out successfully" });
   } catch (err) {
     res.status(500).json({ msg: "Logout failed", error: err.message });
