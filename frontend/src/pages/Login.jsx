@@ -29,6 +29,26 @@ export default function Login() {
             toast.error("Fill all details");
             return;
         }
+      if (password.length < 8) {
+        toast.error("Minimum 8 characters required");
+        return;
+      }
+      if (!/[a-z]/.test(password)) {
+        toast.error("At least one lowercase letter required");
+        return;
+      }
+      if (!/[A-Z]/.test(password)) {
+        toast.error("At least one uppercase letter required");
+        return;
+      }
+      if (!/[0-9]/.test(password)) {
+        toast.error("At least one digit required");
+        return;
+      }
+      if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
+        toast.error("At least one special character required");
+        return;
+      }
 
         const userData = {email,password};
 
