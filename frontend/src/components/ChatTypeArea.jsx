@@ -75,6 +75,10 @@ function ChatTypeArea() {
       });
   };
 
+  const handleTyping = ()=>{
+
+  }
+
   return (
     <div className="relative w-full">
 
@@ -135,6 +139,7 @@ function ChatTypeArea() {
           <input
             type="text"
             value={text}
+            onFocus={handleTyping}
             onChange={(e) => setText(e.target.value)}
             placeholder="Type a message"
             className={`flex-1 focus:outline-none bg-transparent ${theme=='dark'?"caret-amber-50":"caret-black"}`}
